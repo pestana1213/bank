@@ -1,4 +1,6 @@
-package com.bank.bank;
+package com.bank.bank.DTO;
 
-public class TransactionDTO {
+import java.util.Date;
+
+public record TransactionDTO (Long id, Double value, Date scheduledDate) {
 }
