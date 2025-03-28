@@ -44,6 +44,7 @@ public class TransactionService {
     @Transactional
     public Transaction updateTransaction(TransactionDTO transactionDTO) throws Exception {
         try {
+            validator.validateUpdateTransaction(transactionDTO);
             Transaction transaction = getTransactionById(transactionDTO.id());
             if (null != transactionDTO.scheduledDate()) {
                 transaction.setScheduledDate(transactionDTO.scheduledDate());
