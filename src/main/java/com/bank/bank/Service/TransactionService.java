@@ -24,7 +24,16 @@ public class TransactionService {
     }
 
     public Transaction getTransactionById(Long id) throws Exception {
-        return transactionRepo.findById(id).orElseThrow(() -> new Exception("Transaction not found"));
+        return transactionRepo.findById(id).orElseThrow(() -> new Exception("Transaction not found")); // TODO: create exceptions
+    }
+
+    public Date getScheduling(Long id) {
+        try {
+            Transaction transaction = getTransactionById(id);
+            return transaction.getScheduledDate();
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     @Transactional
@@ -55,7 +64,7 @@ public class TransactionService {
             transaction.setFee(calculateFee(transaction.getValue(), transaction.getScheduledDate()));
             return transactionRepo.save(transaction);
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new IllegalArgumentException(e);
         }
     }
 
