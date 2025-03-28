@@ -19,9 +19,9 @@ public class Validator implements DtoValidator {
 
     @Override
     public void validateUpdateTransaction(TransactionDTO transactionDTO) {
-        if (!(transactionDTO.id() != null &&
-                validateValue(transactionDTO.value()) &&
-                validateScheduledDate(transactionDTO.scheduledDate()))) {
+        if (!(transactionDTO.id() != null && (
+                validateValue(transactionDTO.value()) ||
+                validateScheduledDate(transactionDTO.scheduledDate())))) {
             throw new IllegalArgumentException("Invalid transaction");
         }
     }
