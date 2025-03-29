@@ -19,15 +19,20 @@ public class Validator implements DtoValidator {
 
     @Override
     public void validateUpdateTransaction(TransactionDTO transactionDTO) {
-        if (!(transactionDTO.id() != null && (
-                validateValue(transactionDTO.value()) ||
-                validateScheduledDate(transactionDTO.scheduledDate())))) {
-            throw new IllegalArgumentException("Invalid transaction");
+        if (transactionDTO.id() == null) {
+            throw new IllegalArgumentException("Transaction ID must not be null");
+        }
+
+        boolean isValidValue = validateValue(transactionDTO.value());
+        boolean isValidDate = validateScheduledDate(transactionDTO.scheduledDate());
+
+        if (!isValidValue && !isValidDate) {
+            throw new IllegalArgumentException("Both value and scheduled date are invalid");
         }
     }
 
     private boolean validateScheduledDate(Date scheduledDate) {
-        return scheduledDate != null && scheduledDate.after(new Date());
+        return scheduledDate != null && !scheduledDate.before(new Date());
     }
 
     private boolean validateValue(Double value) {

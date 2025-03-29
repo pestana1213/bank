@@ -19,6 +19,9 @@ public class TransactionService {
     @Autowired
     private Validator validator;
 
+    @Autowired
+    private Calculator calculateFee;
+
     public List<Transaction> getAllTransactions() {
         return transactionRepo.findAll();
     }
@@ -46,7 +49,7 @@ public class TransactionService {
         Transaction transaction = new Transaction();
         transaction.setValue(createTransactionDTO.value());
         transaction.setScheduledDate(createTransactionDTO.scheduledDate());
-        transaction.setFee(calculateFee(createTransactionDTO.value(), createTransactionDTO.scheduledDate()));
+        transaction.setFee(calculateFee.calculateFee(createTransactionDTO.value(), createTransactionDTO.scheduledDate()));
         return transactionRepo.save(transaction);
     }
 
@@ -61,14 +64,10 @@ public class TransactionService {
             if (null != transactionDTO.value()) {
                 transaction.setValue(transactionDTO.value());
             }
-            transaction.setFee(calculateFee(transaction.getValue(), transaction.getScheduledDate()));
+            transaction.setFee(calculateFee.calculateFee(transaction.getValue(), transaction.getScheduledDate()));
             return transactionRepo.save(transaction);
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
-    }
-
-    private double calculateFee(double value, Date scheduledDate) {
-        return 0; // TODO: Still needs to be implemented
     }
 }
