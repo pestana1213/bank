@@ -2,6 +2,7 @@ package com.bank.bank.Service;
 
 import com.bank.bank.DTO.CreateTransactionDTO;
 import com.bank.bank.DTO.TransactionDTO;
+import com.bank.bank.Exceptions.TransactionNotFoundException;
 import com.bank.bank.Models.Transaction;
 import com.bank.bank.Repos.TransactionRepo;
 import jakarta.transaction.Transactional;
@@ -26,17 +27,13 @@ public class TransactionService {
         return transactionRepo.findAll();
     }
 
-    public Transaction getTransactionById(Long id) throws Exception {
-        return transactionRepo.findById(id).orElseThrow(() -> new Exception("Transaction not found")); // TODO: create exceptions
+    public Transaction getTransactionById(Long id) {
+        return transactionRepo.findById(id).orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
     }
 
     public Date getScheduling(Long id) {
-        try {
-            Transaction transaction = getTransactionById(id);
-            return transaction.getScheduledDate();
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
-        }
+        Transaction transaction = getTransactionById(id);
+        return transaction.getScheduledDate();
     }
 
     @Transactional
@@ -54,20 +51,16 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction updateTransaction(TransactionDTO transactionDTO) throws Exception {
-        try {
-            validator.validateUpdateTransaction(transactionDTO);
-            Transaction transaction = getTransactionById(transactionDTO.id());
-            if (null != transactionDTO.scheduledDate()) {
-                transaction.setScheduledDate(transactionDTO.scheduledDate());
-            }
-            if (null != transactionDTO.value()) {
-                transaction.setValue(transactionDTO.value());
-            }
-            transaction.setFee(calculateFee.calculateFee(transaction.getValue(), transaction.getScheduledDate()));
-            return transactionRepo.save(transaction);
-        } catch (Exception e) {
-            throw new IllegalArgumentException(e);
+    public Transaction updateTransaction(TransactionDTO transactionDTO) {
+        validator.validateUpdateTransaction(transactionDTO);
+        Transaction transaction = getTransactionById(transactionDTO.id());
+        if (null != transactionDTO.scheduledDate()) {
+            transaction.setScheduledDate(transactionDTO.scheduledDate());
         }
+        if (null != transactionDTO.value()) {
+            transaction.setValue(transactionDTO.value());
+        }
+        transaction.setFee(calculateFee.calculateFee(transaction.getValue(), transaction.getScheduledDate()));
+        return transactionRepo.save(transaction);
     }
 }
