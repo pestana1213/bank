@@ -24,11 +24,7 @@ public class BankController {
 
     @GetMapping("/{id}")
     public Transaction getTransaction(@RequestParam Long id) {
-        try {
-            return transactionService.getTransactionById(id);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return transactionService.getTransactionById(id);
     }
 
     @GetMapping("/scheduling")
