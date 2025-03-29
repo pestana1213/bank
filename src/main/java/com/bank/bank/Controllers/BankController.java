@@ -22,7 +22,7 @@ public class BankController {
         return transactionService.getAllTransactions();
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public Transaction getTransaction(@RequestParam Long id) {
         try {
             return transactionService.getTransactionById(id);
@@ -32,7 +32,7 @@ public class BankController {
     }
 
     @GetMapping("/scheduling")
-    public Date getScheduling(@RequestParam Long id) {
+    public Date getScheduling(@PathVariable Long id) {
         return transactionService.getScheduling(id);
     }
 
@@ -41,8 +41,8 @@ public class BankController {
         return transactionService.createTransaction(createTransactionDTO);
     }
 
-    @DeleteMapping
-    public void deleteTransaction(@RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public void deleteTransaction(@PathVariable Long id) {
         transactionService.deleteTransaction(id);
     }
 
