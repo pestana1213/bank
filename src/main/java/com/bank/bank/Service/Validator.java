@@ -15,7 +15,7 @@ public class Validator implements DtoValidator {
     public void validateCreateTransaction(CreateTransactionDTO createTransactionDTO) {
         if (!(validateValue(createTransactionDTO.value()) &&
                 validateScheduledDate(createTransactionDTO.scheduledDate()))) {
-            throw new TransactionNotFoundException("Invalid transaction");
+            throw new TransactionInvalid("Invalid transaction");
         }
     }
 
