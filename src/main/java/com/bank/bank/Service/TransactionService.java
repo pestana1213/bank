@@ -54,7 +54,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction updateTransaction(TransactionDTO transactionDTO) throws Exception {
+    public Transaction updateTransaction(TransactionDTO transactionDTO) {
         try {
             validator.validateUpdateTransaction(transactionDTO);
             Transaction transaction = getTransactionById(transactionDTO.id());
