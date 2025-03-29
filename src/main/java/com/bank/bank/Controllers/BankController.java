@@ -23,7 +23,7 @@ public class BankController {
     }
 
     @GetMapping("/{id}")
-    public Transaction getTransaction(@PathVariable Long id) {
+    public Transaction getTransaction(@PathVariable("id") Long id) {
         return transactionService.getTransactionById(id);
     }
 
@@ -38,7 +38,7 @@ public class BankController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTransaction(@PathVariable Long id) {
+    public void deleteTransaction(@PathVariable("id") Long id) {
         transactionService.deleteTransaction(id);
     }
 
