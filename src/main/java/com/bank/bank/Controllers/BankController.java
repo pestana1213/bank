@@ -27,8 +27,8 @@ public class BankController {
         return transactionService.getTransactionById(id);
     }
 
-    @GetMapping("/scheduling")
-    public Date getScheduling(@PathVariable Long id) {
+    @GetMapping("/scheduling/{id}")
+    public Date getScheduling(@PathVariable("id") Long id) {
         return transactionService.getScheduling(id);
     }
 
