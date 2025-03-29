@@ -23,7 +23,7 @@ public class BankController {
     }
 
     @GetMapping("/{id}")
-    public Transaction getTransaction(@RequestParam Long id) {
+    public Transaction getTransaction(@PathVariable Long id) {
         return transactionService.getTransactionById(id);
     }
 
