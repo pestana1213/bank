@@ -3,6 +3,7 @@ package com.bank.bank.Service;
 import com.bank.bank.DTO.CreateTransactionDTO;
 import com.bank.bank.DTO.TransactionDTO;
 import com.bank.bank.Exceptions.TransactionNotFoundException;
+import com.bank.bank.Mapper.TransactionMapper;
 import com.bank.bank.Models.Transaction;
 import com.bank.bank.Repos.TransactionRepo;
 import jakarta.transaction.Transactional;
@@ -23,11 +24,15 @@ public class TransactionService {
     @Autowired
     private Calculator calculateFee;
 
-    public List<Transaction> getAllTransactions() {
-        return transactionRepo.findAll();
+    public List<TransactionDTO> getAllTransactions() {
+        return TransactionMapper.INSTANCE.transactionListToTransactionDTO(transactionRepo.findAll());
     }
 
-    public Transaction getTransactionById(Long id) {
+    public TransactionDTO getTransactionByIdDTO(Long id) {
+        return TransactionMapper.INSTANCE.transactionToDTO(getTransactionById(id));
+    }
+
+    private Transaction getTransactionById(Long id) {
         return transactionRepo.findById(id).orElseThrow(() -> new TransactionNotFoundException("Transaction not found"));
     }
 
@@ -41,17 +46,18 @@ public class TransactionService {
         transactionRepo.deleteById(id);
     }
 
-    public Transaction createTransaction(CreateTransactionDTO createTransactionDTO) {
+    public TransactionDTO createTransaction(CreateTransactionDTO createTransactionDTO) {
         validator.validateCreateTransaction(createTransactionDTO);
         Transaction transaction = new Transaction();
         transaction.setValue(createTransactionDTO.value());
         transaction.setScheduledDate(createTransactionDTO.scheduledDate());
         transaction.setFee(calculateFee.calculateFee(createTransactionDTO.value(), createTransactionDTO.scheduledDate()));
-        return transactionRepo.save(transaction);
+        Transaction trans = transactionRepo.save(transaction);
+        return TransactionMapper.INSTANCE.transactionToDTO(trans);
     }
 
     @Transactional
-    public Transaction updateTransaction(TransactionDTO transactionDTO) {
+    public TransactionDTO updateTransaction(TransactionDTO transactionDTO) {
         validator.validateUpdateTransaction(transactionDTO);
         Transaction transaction = getTransactionById(transactionDTO.id());
         if (null != transactionDTO.scheduledDate()) {
@@ -61,6 +67,7 @@ public class TransactionService {
             transaction.setValue(transactionDTO.value());
         }
         transaction.setFee(calculateFee.calculateFee(transaction.getValue(), transaction.getScheduledDate()));
-        return transactionRepo.save(transaction);
+        Transaction trans = transactionRepo.save(transaction);
+        return TransactionMapper.INSTANCE.transactionToDTO(trans);
     }
 }
