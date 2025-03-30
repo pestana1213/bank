@@ -78,3 +78,13 @@ Access in-browser H2 console at http://localhost:8080/h2-console.
 - JDBC URL: jdbc:h2:mem:testdb
 - Username: sa
 - Password: password
+
+
+## Preloaded Transaction Data 🗃️
+The database initializes with these sample transactions:
+
+| ID | Transaction Value | Scheduled Date       | Fee  |
+|----|-------------------|----------------------|------|
+| 1  | 1000.0            | 2025-03-28 10:00:00 | 10.0 |
+| 2  | 2000.0            | 2025-03-29 14:30:00 | 15.0 |
+| 3  | 3000.0            | 2025-03-30 09:15:00 | 20.0 |
