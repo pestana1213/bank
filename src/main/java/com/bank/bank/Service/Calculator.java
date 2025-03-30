@@ -40,7 +40,7 @@ public class Calculator {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
 
-        return ChronoUnit.DAYS.between(scheduledLocalDate, today);
+        return ChronoUnit.DAYS.between(today, scheduledLocalDate);
     }
 
     private double calculateSmallTransferFee(double value, Date scheduledDate) {

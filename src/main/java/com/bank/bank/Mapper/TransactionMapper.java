@@ -1,16 +1,15 @@
 package com.bank.bank.Mapper;
 
-import com.bank.bank.DTO.TransactionDTO;
+import com.bank.bank.DTO.TransactionDTOResponse;
 import com.bank.bank.Models.Transaction;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface TransactionMapper {
-    TransactionMapper INSTANCE = Mappers.getMapper(TransactionMapper.class);
 
-    TransactionDTO transactionToDTO(Transaction transaction);
-    List<TransactionDTO> transactionListToTransactionDTO(List<Transaction> transactions);
+    TransactionDTOResponse transactionToResponse(Transaction transaction);
+
+    List<TransactionDTOResponse> transactionListResponse(List<Transaction> transactions);
 }
