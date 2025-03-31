@@ -40,8 +40,8 @@ public class BankControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(bankController).build();
 
-        transactionDTOResponse = new TransactionDTOResponse(1000.0, new Date(), 10.0);
-        createTransactionDTO = new CreateTransactionDTO(1000.0, new Date());
+        transactionDTOResponse = new TransactionDTOResponse(1000.0, new Date(), 10.0, "1", "2");
+        createTransactionDTO = new CreateTransactionDTO(1000.0, new Date(), "1", "2");
         transactionDTO = new TransactionDTO(1L, 1200.0, new Date());
     }
 
@@ -52,7 +52,10 @@ public class BankControllerTest {
         mockMvc.perform(get("/transactions"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].value").value(1000.0))
-                .andExpect(jsonPath("$[0].fee").value(10.0));
+                .andExpect(jsonPath("$[0].fee").value(10.0))
+                .andExpect(jsonPath("$[0].accountFrom").value("1"))
+                .andExpect(jsonPath("$[0].accountTo").value("2"));
+        ;
 
         verify(transactionService, times(1)).getAllTransactions();
     }
@@ -64,7 +67,9 @@ public class BankControllerTest {
         mockMvc.perform(get("/transactions/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.value").value(1000.0))
-                .andExpect(jsonPath("$.fee").value(10.0));
+                .andExpect(jsonPath("$.fee").value(10.0))
+                .andExpect(jsonPath("$.accountFrom").value("1"))
+                .andExpect(jsonPath("$.accountTo").value("2"));
 
         verify(transactionService, times(1)).getTransactionByIdDTO(1L);
     }
@@ -90,7 +95,9 @@ public class BankControllerTest {
                         .content("{\"value\": 1000.0, \"scheduledDate\": \"2025-03-31T00:00:00\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.value").value(1000.0))
-                .andExpect(jsonPath("$.fee").value(10.0));
+                .andExpect(jsonPath("$.fee").value(10.0))
+                .andExpect(jsonPath("$.accountFrom").value("1"))
+                .andExpect(jsonPath("$.accountTo").value("2"));
 
         verify(transactionService, times(1)).createTransaction(any(CreateTransactionDTO.class));
     }
@@ -114,7 +121,9 @@ public class BankControllerTest {
                         .content("{\"id\": 1, \"value\": 1200.0, \"scheduledDate\": \"2025-03-31T00:00:00\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.value").value(1000.0))
-                .andExpect(jsonPath("$.fee").value(10.0));
+                .andExpect(jsonPath("$.fee").value(10.0))
+                .andExpect(jsonPath("$.accountFrom").value("1"))
+                .andExpect(jsonPath("$.accountTo").value("2"));
 
         verify(transactionService, times(1)).updateTransaction(any(TransactionDTO.class));
     }

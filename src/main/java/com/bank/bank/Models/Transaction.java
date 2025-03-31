@@ -28,4 +28,8 @@ public class Transaction {
     private Date scheduledDate;
 
     private Double fee;
+
+    private String accountFrom;
+
+    private String accountTo;
 }

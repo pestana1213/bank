@@ -51,9 +51,9 @@ public class TransactionServiceTest {
         transaction.setScheduledDate(new Date());
         transaction.setFee(10.0);
 
-        transactionDTOResponse = new TransactionDTOResponse(1000.0, new Date(), 10.0);
+        transactionDTOResponse = new TransactionDTOResponse(1000.0, new Date(), 10.0, "1", "2");
 
-        createTransactionDTO = new CreateTransactionDTO(1000.0, new Date());
+        createTransactionDTO = new CreateTransactionDTO(1000.0, new Date(), "1", "2");
     }
 
     @Test
@@ -107,8 +107,8 @@ public class TransactionServiceTest {
     @Test
     void testUpdateTransaction() {
         TransactionDTO transactionDTO = new TransactionDTO(1L, 1200.0, new Date());
-        Transaction saved = new Transaction(1L, 1200.0, new Date(), 1.0);
-        transactionDTOResponse = new TransactionDTOResponse(1200.0, new Date(), 10.0);
+        Transaction saved = new Transaction(1L, 1200.0, new Date(), 1.0, "1", "2");
+        transactionDTOResponse = new TransactionDTOResponse(1200.0, new Date(), 10.0, "1", "2");
         when(transactionRepo.findById(1L)).thenReturn(Optional.of(transaction));
         when(calculateFee.calculateFee(anyDouble(), any())).thenReturn(12.0);
         when(transactionRepo.save(any())).thenReturn(saved);

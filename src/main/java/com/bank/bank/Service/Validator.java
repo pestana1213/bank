@@ -1,9 +1,9 @@
 package com.bank.bank.Service;
 
+import ch.qos.logback.core.util.StringUtil;
 import com.bank.bank.DTO.CreateTransactionDTO;
 import com.bank.bank.DTO.TransactionDTO;
 import com.bank.bank.Exceptions.TransactionInvalid;
-import com.bank.bank.Exceptions.TransactionNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -14,7 +14,10 @@ public class Validator implements DtoValidator {
     @Override
     public void validateCreateTransaction(CreateTransactionDTO createTransactionDTO) {
         if (!(validateValue(createTransactionDTO.value()) &&
-                validateScheduledDate(createTransactionDTO.scheduledDate()))) {
+                validateScheduledDate(createTransactionDTO.scheduledDate()) &&
+                !StringUtil.isNullOrEmpty(createTransactionDTO.accountFrom()) &&
+                !StringUtil.isNullOrEmpty(createTransactionDTO.accountTo())
+        )) {
             throw new TransactionInvalid("Invalid transaction");
         }
     }
