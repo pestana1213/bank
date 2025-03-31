@@ -31,7 +31,9 @@ A Spring Boot REST API for managing banking transactions, including scheduling a
 ```json
 {
   "value": 1500.0,
-  "scheduledDate": "2025-12-25T14:30:00"
+  "scheduledDate": "2025-12-25T14:30:00",
+  "accountFrom": "123456789",
+  "accountTo": "987654321"
 }
 ```
 ### 4. Delete a Transaction
@@ -83,8 +85,8 @@ Access in-browser H2 console at http://localhost:8080/h2-console.
 ## Preloaded Transaction Data 🗃️
 The database initializes with these sample transactions:
 
-| ID | Transaction Value | Scheduled Date       | Fee  |
-|----|-------------------|----------------------|------|
-| 1  | 1000.0            | 2025-03-28 10:00:00 | 10.0 |
-| 2  | 2000.0            | 2025-03-29 14:30:00 | 15.0 |
-| 3  | 3000.0            | 2025-03-30 09:15:00 | 20.0 |
+| ID | Transaction Value | Scheduled Date       | Fee  | Accountfrom | AccountTo |
+|----|-------------------|----------------------|------|-------------|-----------|
+| 1  | 1000.0            | 2025-03-28 10:00:00 | 10.0 | 1           | 2         |
+| 2  | 2000.0            | 2025-03-29 14:30:00 | 15.0 | 3           | 4         |
+| 3  | 3000.0            | 2025-03-30 09:15:00 | 20.0 | 2           | 3         |

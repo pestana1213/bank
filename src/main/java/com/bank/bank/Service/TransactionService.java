@@ -52,12 +52,10 @@ public class TransactionService {
 
     public TransactionDTOResponse createTransaction(CreateTransactionDTO createTransactionDTO) {
         validator.validateCreateTransaction(createTransactionDTO);
-        Transaction transaction = new Transaction();
-        transaction.setValue(createTransactionDTO.value());
-        transaction.setScheduledDate(createTransactionDTO.scheduledDate());
+        Transaction transaction = transactionMapper.dtoToTransaction(createTransactionDTO);
         transaction.setFee(calculateFee.calculateFee(createTransactionDTO.value(), createTransactionDTO.scheduledDate()));
-        Transaction trans = transactionRepo.save(transaction);
-        return transactionMapper.transactionToResponse(trans);
+        transactionRepo.save(transaction);
+        return transactionMapper.transactionToResponse(transaction);
     }
 
     @Transactional
