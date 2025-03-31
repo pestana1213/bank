@@ -90,3 +90,20 @@ The database initializes with these sample transactions:
 | 1  | 1000.0            | 2025-03-28 10:00:00 | 10.0 | 1           | 2         |
 | 2  | 2000.0            | 2025-03-29 14:30:00 | 15.0 | 3           | 4         |
 | 3  | 3000.0            | 2025-03-30 09:15:00 | 20.0 | 2           | 3         |
+
+# Running Spring Boot Application with Docker
+
+## 1. Pull the Docker Image
+
+Docker Hub repo: https://hub.docker.com/repository/docker/joaopestana123/transactions/general
+
+You can pull the Docker image from Docker Hub using the following command:
+
+```bash
+    docker pull joaopestana123/transactions:latest
+```
+```bash
+    docker run -p 8080:8080 joaopestana123/transactions:latest
+```
+
+And hit the endpoints as above
