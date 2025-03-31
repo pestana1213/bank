@@ -31,7 +31,9 @@ A Spring Boot REST API for managing banking transactions, including scheduling a
 ```json
 {
   "value": 1500.0,
-  "scheduledDate": "2025-12-25T14:30:00"
+  "scheduledDate": "2025-12-25T14:30:00",
+  "accountFrom": "123456789",
+  "accountTo": "987654321"
 }
 ```
 ### 4. Delete a Transaction
