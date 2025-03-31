@@ -3,6 +3,7 @@ package com.bank.bank.Service;
 import com.bank.bank.DTO.CreateTransactionDTO;
 import com.bank.bank.DTO.TransactionDTO;
 import com.bank.bank.DTO.TransactionDTOResponse;
+import com.bank.bank.Exceptions.TransactionInvalid;
 import com.bank.bank.Exceptions.TransactionNotFoundException;
 import com.bank.bank.Mapper.TransactionMapper;
 import com.bank.bank.Models.Transaction;
@@ -62,6 +63,9 @@ public class TransactionService {
     public TransactionDTOResponse updateTransaction(TransactionDTO transactionDTO) {
         validator.validateUpdateTransaction(transactionDTO);
         Transaction transaction = getTransactionById(transactionDTO.id());
+        if (transaction.getScheduledDate().before(new Date())) {
+            throw new TransactionInvalid("Can't update this transaction because it was already processed");
+        }
         if (null != transactionDTO.scheduledDate()) {
             transaction.setScheduledDate(transactionDTO.scheduledDate());
         }

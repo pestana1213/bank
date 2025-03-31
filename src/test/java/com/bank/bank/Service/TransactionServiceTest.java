@@ -3,6 +3,7 @@ package com.bank.bank.Service;
 import com.bank.bank.DTO.CreateTransactionDTO;
 import com.bank.bank.DTO.TransactionDTO;
 import com.bank.bank.DTO.TransactionDTOResponse;
+import com.bank.bank.Exceptions.TransactionInvalid;
 import com.bank.bank.Exceptions.TransactionNotFoundException;
 import com.bank.bank.Mapper.TransactionMapper;
 import com.bank.bank.Models.Transaction;
@@ -110,6 +111,7 @@ public class TransactionServiceTest {
         TransactionDTO transactionDTO = new TransactionDTO(1L, 1200.0, new Date());
         Transaction saved = new Transaction(1L, 1200.0, new Date(), 1.0, "1", "2");
         transactionDTOResponse = new TransactionDTOResponse(1200.0, new Date(), 10.0, "1", "2");
+        transaction.setScheduledDate(new Date(System.currentTimeMillis() + 1000));
         when(transactionRepo.findById(1L)).thenReturn(Optional.of(transaction));
         when(calculateFee.calculateFee(anyDouble(), any())).thenReturn(12.0);
         when(transactionRepo.save(any())).thenReturn(saved);
@@ -121,6 +123,25 @@ public class TransactionServiceTest {
         assertEquals(1200.0, result.value());
         verify(transactionRepo, times(1)).save(any());
     }
+
+    @Test
+    void testUpdateTransactionThrowsError() {
+        TransactionDTO transactionDTO = new TransactionDTO(1L, 1200.0, new Date());
+        Transaction saved = new Transaction(1L, 1200.0, new Date(), 1.0, "1", "2");
+        transactionDTOResponse = new TransactionDTOResponse(1200.0, new Date(), 10.0, "1", "2");
+        when(transactionRepo.findById(1L)).thenReturn(Optional.of(transaction));
+        when(calculateFee.calculateFee(anyDouble(), any())).thenReturn(12.0);
+        when(transactionRepo.save(any())).thenReturn(saved);
+        when(transactionMapper.transactionToResponse(any())).thenReturn(transactionDTOResponse);
+
+        TransactionInvalid exception = assertThrows(TransactionInvalid.class, () -> {
+            transactionService.updateTransaction(transactionDTO);
+        });
+
+        assertEquals("Can't update this transaction because it was already processed", exception.getMessage());
+        verify(transactionRepo, times(0)).save(any());
+    }
+
 
     @Test
     void testDeleteTransaction() {
