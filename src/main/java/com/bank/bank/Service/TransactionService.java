@@ -52,8 +52,10 @@ public class TransactionService {
 
     public TransactionDTOResponse createTransaction(CreateTransactionDTO createTransactionDTO) {
         validator.validateCreateTransaction(createTransactionDTO);
-        Transaction trans = transactionRepo.save(transactionMapper.dtoToTransaction(createTransactionDTO));
-        return transactionMapper.transactionToResponse(trans);
+        Transaction transaction = transactionMapper.dtoToTransaction(createTransactionDTO);
+        transaction.setFee(calculateFee.calculateFee(createTransactionDTO.value(), createTransactionDTO.scheduledDate()));
+        transactionRepo.save(transaction);
+        return transactionMapper.transactionToResponse(transaction);
     }
 
     @Transactional

@@ -94,6 +94,7 @@ public class TransactionServiceTest {
     @Test
     void testCreateTransaction() {
         when(calculateFee.calculateFee(anyDouble(), any())).thenReturn(10.0);
+        when(transactionMapper.dtoToTransaction(any())).thenReturn(transaction);
         when(transactionRepo.save(any())).thenReturn(transaction);
         when(transactionMapper.transactionToResponse(any())).thenReturn(transactionDTOResponse);
 
